@@ -4,30 +4,28 @@
     <meta charset="UTF-8">
     <title>Proiecte - HTML5</title>
 </head>
-<body bgcolor="#FAFAFA">
+<body>
 <header>
-    <center>
-        <h1>Pagina 1</h1>
-        <h2>Proiecte</h2>
-        <h3>Sectiune</h3>
-        <h4>Liste</h4>
-        <h5>Info</h5>
-        <h6>HTML5</h6>
-        <p>Formular contract. <strong>Manager</strong></p>
-    </center>
+    <h1>Pagina 1</h1>
+    <h2>Proiecte</h2>
+    <h3>Sectiune</h3>
+    <h4>Liste</h4>
+    <h5>Info</h5>
+    <h6>HTML5</h6>
+    <p>Formular contract. <strong>Manager</strong></p>
 </header>
 
 <div title="Continut">
-    <table border="1" width="100%" bgcolor="#FFFFFF" cellpadding="5">
-        <tr bgcolor="#333333" align="center">
-            <th colspan="3" bgcolor="#333333">TABEL PRINCIPAL</th>
+    <table>
+        <tr>
+            <th colspan="3">TABEL PRINCIPAL</th>
         </tr>
         <tr>
-            <td width="30%" valign="top">
+            <td>
                 <strong>Lista (I,II,III):</strong>
                 <ol type="I">
                     <li>Proiectare
-                        <ul type="disc">
+                        <ul>
                             <li>Arhitectura</li>
                             <li>Structura</li>
                         </ul>
@@ -44,20 +42,20 @@
                     <li>Optiunea A</li>
                     <li>Optiunea B</li>
                 </ol>
-                <table border="1" width="100%" bgcolor="#E8F5E9">
-                    <tr><th colspan="2" align="center">Tabel in tabel 2</th></tr>
+                <table>
+                    <tr><th colspan="2">Tabel in tabel 2</th></tr>
                     <tr><td>X</td><td>Y</td></tr>
                 </table>
             </td>
-            <td align="left" valign="middle">
+            <td>
                 <p>Text <b>sustenabil</b>.</p>
-                <table border="2" align="center" width="80%" bgcolor="#E0E0E0">
-                    <tr><td colspan="2" align="center"><b>Stoc</b></td></tr>
-                    <tr><td>Excavator</td><td align="right">2 buc</td></tr>
-                    <tr><td>Betoniera</td><td align="right">5 buc</td></tr>
+                <table>
+                    <tr><td colspan="2"><b>Stoc</b></td></tr>
+                    <tr><td>Excavator</td><td>2 buc</td></tr>
+                    <tr><td>Betoniera</td><td>5 buc</td></tr>
                 </table>
             </td>
-            <td rowspan="2" align="center" valign="middle">
+            <td rowspan="2">
                 <img src="https://via.placeholder.com/150" alt="Logo" width="150" height="150" title="Logo">
                 <br>
                 <a href="pg2-html5.html" target="_self" title="Pagina 2">Pagina 2</a>
@@ -65,7 +63,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" align="center"><span>Documentatie.</span></td>
+            <td colspan="2"><span>Documentatie.</span></td>
         </tr>
     </table>
 
@@ -74,7 +72,7 @@
     <form action="#" method="get" name="form1">
         <fieldset>
             <legend><strong>Formular</strong></legend>
-            <table border="0" width="100%">
+            <table>
                 <tr>
                     <td>Nume:</td>
                     <td><input type="text" name="nume" size="40" maxlength="100" value="Nume" title="Nume"></td>
@@ -127,13 +125,13 @@
                     <td colspan="2">Descriere:<br>
                         <textarea name="desc" rows="4" cols="50">Text...</textarea>
                     </td>
-                    <td colspan="2" valign="bottom">
+                    <td colspan="2">
                         Parola: <input type="password" name="pass"><br><br>
                         Fisier: <input type="file" name="fisier">
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="4" align="center">
+                    <td colspan="4">
                         <span>Verificati.</span><br>
                         <input type="submit" value="Salveaza">
                     </td>
@@ -144,9 +142,7 @@
 </div>
 
 <footer>
-    <center>
-        <p>Copyright 2024.</p>
-    </center>
+    <p>Copyright 2024.</p>
 </footer>
 </body>
 </html>
