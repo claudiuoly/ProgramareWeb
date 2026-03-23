@@ -127,6 +127,66 @@ table.data-table th {
     color: white;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Media Queries for Style 2 */
+@media (max-width: 768px) {
+    /* Meniul vertical devine orizontal pe mobil ca sa nu manance tot ecranul */
+    .layout-container {
+        flex-direction: column;
+    }
+    
+    .sidebar-menu {
+        width: 100%;
+    }
+
+    /* Submeniul sa nu mai fie lipit in dreapta cand meniul e sus */
+    .main-menu .submenu {
+        position: static;
+    }
+
+    /* Tabele din paginile pg1 si pg2 pe mobil */
+    div[title="Continut"] table, 
+    div[title="Raport"] table,
+    div[title="Continut"] tbody, 
+    div[title="Raport"] tbody,
+    div[title="Continut"] tr, 
+    div[title="Raport"] tr,
+    div[title="Continut"] th, 
+    div[title="Raport"] th,
+    div[title="Continut"] td, 
+    div[title="Raport"] td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    div[title="Continut"] td,
+    div[title="Raport"] td {
+        border-bottom: 1px solid #ddd;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
+    /* Formulare responsive (fara overflow) */
+    form table, 
+    form tbody, 
+    form tr, 
+    form td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    form input, form select, form textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
+
 /* Form styling */
 .styled-form {
     background: #fdfdfd;
