@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular - HTML5</title>
+    <link id="theme-style" rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <div class="layout-container">
+        <aside class="sidebar-menu">
+            <nav class="main-menu sprites-menu">
+                <ul>
+                    <li class="menu-item-pg1"><a href="pg1-html5.html">Pagina 1</a></li>
+                    <li class="menu-item-pg2"><a href="pg2-html5.html">Raport</a></li>
+                    <li class="menu-item-sprites"><a href="sprites.html">Sprites</a></li>
+                    <li class="menu-item-dash"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="menu-item-table"><a href="table.html">Tabel Responsive</a></li>
+                    <li class="menu-item-form"><a href="form.html">Formular</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content-wrapper animated-element">
+            <h1>Formular de Contact</h1>
+            <p>Incercati selectarea casutelor pentru a vedea efectul de <b>:focus</b> si modificarea culorii de bordura si a umbrelor adaugate in CSS.</p>
+            <form class="styled-form" action="#" method="post">
+                <div class="form-group">
+                    <label for="fname">Nume Complet</label>
+                    <input type="text" id="fname" name="fname" placeholder="Ion Popescu" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Adresa de Email</label>
+                    <input type="email" id="email" name="email" placeholder="ion@exemplu.ro" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Parola Cont</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subiect</label>
+                    <select id="subject" name="subject">
+                        <option value="general">Intrebare generala</option>
+                        <option value="support">Suport Tehnic</option>
+                        <option value="sales">Vanzari</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mesaj</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Scrieti mesajul dvs. aici..." required></textarea>
+                </div>
+                <button type="submit">Trimite Mesajul</button>
+            </form>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #fafafa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.layout-container {
+    display: block;
+}
+
+/* Responsive Menu - Horizontal by default */
+.sidebar-menu {
+    background: #e74c3c;
+}
+
+.main-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.main-menu a {
+    display: block;
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.main-menu a:hover {
+    background: #c0392b;
+}
+
+.sprites-menu a::before {
+    display: none;
+}
+
+.main-content-wrapper {
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* Dashboard */
+.dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.widget {
+    flex: 1 1 calc(33.333% - 20px);
+    background: white;
+    padding: 20px;
+    box-sizing: border-box;
+    border-top: 4px solid #e74c3c;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Responsive Table */
+.table-responsive {
+    overflow-x: auto;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-radius: 4px;
+}
+
+table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.data-table th, table.data-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+table.data-table th {
+    background-color: #f8f9fa;
+    color: #333;
+}
+
+/* Form styling */
+.styled-form {
+    background: #fff;
+    padding: 25px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.styled-form .form-group {
+    margin-bottom: 15px;
+}
+.styled-form label {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+.styled-form input[type="text"],
+.styled-form input[type="email"],
+.styled-form input[type="password"],
+.styled-form textarea,
+.styled-form select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+.styled-form button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+.styled-form button:hover {
+    background: #c0392b;
+}
+
+/* Media Queries */
+
+/* Tablet layout */
+@media (max-width: 768px) {
+    .main-menu ul {
+        flex-direction: column;
+    }
+    
+    .main-menu a {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        text-align: center;
+    }
+
+    .widget {
+        flex: 1 1 calc(50% - 20px);
+    }
+}
+
+/* Mobile layout */
+@media (max-width: 480px) {
+    .widget {
+        flex: 1 1 100%;
+    }
+    
+    /* Responsive Table for very small screens */
+    table.data-table, table.data-table tbody, table.data-table tr, table.data-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    table.data-table thead {
+        display: none; /* Hide headers */
+    }
+    
+    table.data-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+    }
+    
+    table.data-table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #eee;
+    }
+    
+    table.data-table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 15px;
+        font-weight: bold;
+        text-align: left;
+        white-space: nowrap;
+    }
+}

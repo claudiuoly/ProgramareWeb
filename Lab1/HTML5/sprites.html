@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprites - HTML5</title>
+    <link id="theme-style" rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <div class="layout-container">
+        <aside class="sidebar-menu">
+            <nav class="main-menu sprites-menu">
+                <ul>
+                    <li class="menu-item-pg1"><a href="pg1-html5.html">Pagina 1</a></li>
+                    <li class="menu-item-pg2"><a href="pg2-html5.html">Raport</a></li>
+                    <li class="menu-item-sprites"><a href="sprites.html">Sprites</a></li>
+                    <li class="menu-item-dash"><a href="dashboard.html">Dashboard</a></li>
+                    <li class="menu-item-table"><a href="table.html">Tabel Responsive</a></li>
+                    <li class="menu-item-form"><a href="form.html">Formular</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content-wrapper animated-element">
+            <h1>Exemplu CSS Sprites</h1>
+            <p>Aceasta pagina demonstreaza cum functioneaza CSS Sprites. Meniul de navigare de sus foloseste deja un fisier <code>sprite.svg</code> cu 6 iconite puse la un loc, pe care le decupam folosind <code>background-position</code>.</p>
+            
+            <div style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-top: 30px;">
+                <h3 style="margin-top: 0; color: #2c3e50;">Exemplu cu "Sprite Sheet"</h3>
+                <p>O imagine de tip Sprite este o poza mare care contine in interiorul ei mai multe elemente sau cadre.</p>
+                <p>Incarcand o singura poza mare in loc de zeci de poze mici pentru fiecare cadru, ajutam site-ul sa se miste mai repede pentru ca facem o singura cerere catre server in loc de mai multe!</p>
+                <div style="background: #2c3e50; padding: 15px; border-radius: 4px; display: inline-block; max-height: 400px; overflow-y: auto;">
+                    <img src="luigi-sprite.png" alt="Imagine CSS Sprite Luigi" style="max-width: 100%; height: auto; display: block;">
+                </div>
+
+                <h3 style="color: #2c3e50; margin-top: 30px;">Decuparea din CSS (background-position)</h3>
+                <p>Daca punem acea imagine ca background si tragem de coordonatele X si Y cu minus, putem scoate la iveala exact personajul de care avem nevoie, ascunzand restul pozei:</p>
+                
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; text-align: center; flex: 1; min-width: 120px;">
+                        <div style="width: 33px; height: 28px; background-image: url('luigi-sprite.png'); background-position: -366px -434px; margin: 0 auto 10px auto; transform: scale(1.5);"></div>
+                        <code style="display: block; font-size: 12px; background: #eee; padding: 5px; border-radius: 3px; margin-top: 15px;">-366px -434px</code>
+                    </div>
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; text-align: center; flex: 1; min-width: 120px;">
+                        <div style="width: 26px; height: 27px; background-image: url('luigi-sprite.png'); background-position: -370px -234px; margin: 0 auto 10px auto; transform: scale(1.5);"></div>
+                        <code style="display: block; font-size: 12px; background: #eee; padding: 5px; border-radius: 3px; margin-top: 15px;">-370px -234px</code>
+                    </div>
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; text-align: center; flex: 1; min-width: 120px;">
+                        <div style="width: 23px; height: 27px; background-image: url('luigi-sprite.png'); background-position: -331px -794px; margin: 0 auto 10px auto; transform: scale(1.5);"></div>
+                        <code style="display: block; font-size: 12px; background: #eee; padding: 5px; border-radius: 3px; margin-top: 15px;">-331px -794px</code>
+                    </div>
+                    <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px; text-align: center; flex: 1; min-width: 120px;">
+                        <div style="width: 16px; height: 26px; background-image: url('luigi-sprite.png'); background-position: -55px -155px; margin: 0 auto 10px auto; transform: scale(1.5);"></div>
+                        <code style="display: block; font-size: 12px; background: #eee; padding: 5px; border-radius: 3px; margin-top: 15px;">-55px -155px</code>
+                    </div>
+                </div>
+
+                <p>Codul CSS ca sa obtinem primul caracter din cutiile de mai sus arata in felul urmator:</p>
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #e74c3c;">
+                    <code>
+                        .element-luigi {<br>
+                        &nbsp;&nbsp;display: inline-block;<br>
+                        &nbsp;&nbsp;width: 33px;<br>
+                        &nbsp;&nbsp;height: 28px;<br>
+                        &nbsp;&nbsp;background-image: url('luigi-sprite.png');<br>
+                        &nbsp;&nbsp;background-position: -366px -434px;<br>
+                        }
+                    </code>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

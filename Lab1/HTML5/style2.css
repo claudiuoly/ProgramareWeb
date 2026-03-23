@@ -1,0 +1,152 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #eef2f3;
+    color: #444;
+    margin: 0;
+}
+
+/* Layout for Vertical Menu */
+.layout-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar-menu {
+    width: 250px;
+    background-color: #2c3e50;
+    flex-shrink: 0;
+}
+
+.main-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-menu a {
+    display: block;
+    color: white;
+    padding: 15px 20px;
+    text-decoration: none;
+    border-bottom: 1px solid #1a252f;
+    transition: all 0.3s ease;
+}
+
+.main-menu a:hover {
+    background-color: #34495e;
+    padding-left: 30px;
+}
+
+/* Hide sprite icons in style 2 */
+.sprites-menu a::before {
+    display: none;
+}
+
+/* Main Content */
+.main-content-wrapper {
+    flex-grow: 1;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.05);
+}
+
+/* CSS Animation */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animated-element {
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+}
+
+/* Dashboard */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.widget {
+    background: #fdfdfd;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid #e1e1e1;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.widget:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+.widget h3 {
+    color: #2c3e50;
+    margin-top: 0;
+}
+
+/* Table styling */
+table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table.data-table th, table.data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+table.data-table th {
+    background-color: #34495e;
+    color: white;
+}
+
+/* Form styling */
+.styled-form {
+    background: #fdfdfd;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+}
+.styled-form .form-group {
+    margin-bottom: 20px;
+}
+.styled-form label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
+.styled-form input[type="text"],
+.styled-form input[type="email"],
+.styled-form input[type="password"],
+.styled-form textarea {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    padding: 10px 0;
+    width: 100%;
+    transition: border-bottom-color 0.3s;
+}
+.styled-form input:focus,
+.styled-form textarea:focus {
+    border-bottom-color: #2c3e50;
+    outline: none;
+}
+.styled-form button {
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+}
+.styled-form button:hover {
+    background: #1a252f;
+    transform: scale(1.02);
+}
