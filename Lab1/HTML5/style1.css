@@ -21,6 +21,8 @@ body {
 
 .sidebar-menu {
     background-color: var(--secondary-color);
+    position: relative;
+    z-index: 2000;
 }
 
 .main-menu ul {
@@ -34,10 +36,40 @@ body {
 
 .main-menu li {
     margin: 0;
+    position: relative;
+}
+
+/* Submenu styling */
+.main-menu .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--secondary-color);
+    min-width: 150px;
+    z-index: 1000;
+    flex-direction: column;
+    padding: 0;
+}
+
+.main-menu .has-submenu:hover .submenu {
+    display: flex;
+}
+
+.main-menu .submenu li {
+    width: 100%;
+}
+
+.main-menu .submenu a {
+    padding: 10px 20px;
+    text-align: left;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .main-menu a {
-    display: inline-block;
+    display: block;
     color: white;
     text-align: center;
     padding: 14px 20px;

@@ -15,12 +15,34 @@ body {
     width: 250px;
     background-color: #2c3e50;
     flex-shrink: 0;
+    position: relative;
+    z-index: 2000;
 }
 
 .main-menu ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+.main-menu li {
+    position: relative;
+}
+
+/* Submenu styling */
+.main-menu .submenu {
+    display: none;
+    background-color: #1a252f;
+}
+
+.main-menu .has-submenu:hover .submenu {
+    display: block;
+}
+
+.main-menu .submenu a {
+    padding-left: 40px;
+    border-bottom: 1px solid #111820;
+    font-size: 0.9em;
 }
 
 .main-menu a {

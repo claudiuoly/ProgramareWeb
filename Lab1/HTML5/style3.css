@@ -14,6 +14,8 @@ body {
 /* Responsive Menu - Horizontal by default */
 .sidebar-menu {
     background: #e74c3c;
+    position: relative;
+    z-index: 2000;
 }
 
 .main-menu ul {
@@ -22,6 +24,25 @@ body {
     margin: 0;
     display: flex;
     justify-content: center;
+}
+
+.main-menu li {
+    position: relative;
+}
+
+/* Submenu desktop */
+.main-menu .submenu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #c0392b;
+    min-width: 160px;
+    z-index: 1000;
+}
+
+.main-menu .has-submenu:hover .submenu {
+    display: block;
 }
 
 .main-menu a {
@@ -125,12 +146,23 @@ table.data-table th {
     background: #c0392b;
 }
 
+/* Make images responsive */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Media Queries */
 
-/* Tablet layout */
 @media (max-width: 768px) {
+    /* Meniu responsive */
     .main-menu ul {
         flex-direction: column;
+    }
+    
+    .main-menu .submenu {
+        position: static;
+        background-color: #b53222;
     }
     
     .main-menu a {
@@ -138,26 +170,85 @@ table.data-table th {
         text-align: center;
     }
 
-    .widget {
-        flex: 1 1 calc(50% - 20px);
-    }
-}
-
-/* Mobile layout */
-@media (max-width: 480px) {
+    /* Dashboard responsive */
     .widget {
         flex: 1 1 100%;
     }
-    
-    /* Responsive Table for very small screens */
-    table.data-table, table.data-table tbody, table.data-table tr, table.data-table td {
+
+    /* Tabele din paginile vechi pe mobil */
+    div[title="Continut"] table, 
+    div[title="Raport"] table,
+    div[title="Continut"] tbody, 
+    div[title="Raport"] tbody,
+    div[title="Continut"] tr, 
+    div[title="Raport"] tr,
+    div[title="Continut"] th, 
+    div[title="Raport"] th,
+    div[title="Continut"] td, 
+    div[title="Raport"] td {
         display: block;
         width: 100%;
         box-sizing: border-box;
     }
+
+    div[title="Continut"] th,
+    div[title="Raport"] th {
+        background-color: #e74c3c;
+        color: white;
+        padding: 10px;
+    }
+
+    div[title="Continut"] td,
+    div[title="Raport"] td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Formulare responswive */
+    form table, 
+    form tbody, 
+    form tr, 
+    form td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    form td {
+        padding: 5px 0;
+        border: none;
+    }
+
+    form input[type="text"],
+    form input[type="number"],
+    form input[type="email"],
+    form input[type="password"],
+    form input[type="date"],
+    form select,
+    form textarea,
+    form input[type="submit"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px;
+        margin-top: 5px;
+    }
+
+    form input[type="submit"] {
+        background-color: #e74c3c;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
     
+    /* Tabelul special din table.html */
     table.data-table thead {
-        display: none; /* Hide headers */
+        display: none;
+    }
+    
+    table.data-table, table.data-table tbody, table.data-table tr, table.data-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
     }
     
     table.data-table tr {
@@ -169,18 +260,12 @@ table.data-table th {
         text-align: right;
         padding-left: 50%;
         position: relative;
-        border: none;
-        border-bottom: 1px solid #eee;
     }
     
     table.data-table td::before {
         content: attr(data-label);
         position: absolute;
-        left: 0;
-        width: 45%;
-        padding-left: 15px;
+        left: 10px;
         font-weight: bold;
-        text-align: left;
-        white-space: nowrap;
     }
 }
