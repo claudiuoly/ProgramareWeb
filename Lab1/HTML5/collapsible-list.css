@@ -1,0 +1,43 @@
+.collapsible-root {
+    max-width: 420px;
+    padding: 0;
+    list-style: none;
+}
+
+.collapsible-item {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-bottom: 6px;
+    background: #fafafa;
+}
+
+.collapsible-root > .collapsible-item > .collapsible-btn,
+.collapsible-item > .collapsible-btn {
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+    cursor: pointer;
+    vertical-align: middle;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    background: #fff;
+    font-size: 11px;
+}
+
+.collapsible-item:not(.is-open) > ul {
+    display: none;
+}
+
+.collapsible-item > ul {
+    margin: 8px 0 0 20px;
+}
+
+.collapsible-item ul > li.collapsible-item {
+    list-style: none;
+}
+
+.collapsible-item .collapsible-item {
+    border-style: solid;
+    font-size: 0.95em;
+}

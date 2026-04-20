@@ -7,6 +7,7 @@
     <link id="theme-style" rel="stylesheet" href="style2.css">
     <link rel="stylesheet" href="carousel.css">
     <link rel="stylesheet" href="site-insights.css">
+    <link rel="stylesheet" href="collapsible-list.css">
 </head>
 <body>
     <div class="layout-container">
@@ -38,6 +39,25 @@
 
             <section class="site-insights" id="site-insights-mount" aria-live="polite" aria-label="Statistici proiecte"></section>
 
+            <h2 style="margin-top: 10px; color: #2c3e50;">Liste colapsabile</h2>
+            <p style="font-size: 0.9rem;">Deschizi santierul, apoi cutia.</p>
+            <ul class="collapsible-root">
+                <li class="collapsible-item is-open">
+                    <button type="button" class="collapsible-btn" aria-expanded="true">&#9660;</button>
+                    <span>Santier</span>
+                    <ul>
+                        <li>Ciment</li>
+                        <li class="collapsible-item">
+                            <button type="button" class="collapsible-btn" aria-expanded="false">&#9654;</button>
+                            <span>Cutie unelte</span>
+                            <ul>
+                                <li>Ciocan</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
             <div class="dashboard">
                 <div class="widget">
                     <h3>Proiecte Active</h3>
@@ -66,5 +86,6 @@
     <script src="carousel.js"></script>
     <script src="table-data.js"></script>
     <script src="site-insights.js"></script>
+    <script src="collapsible-list.js"></script>
 </body>
 </html>
