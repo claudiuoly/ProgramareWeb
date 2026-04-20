@@ -251,6 +251,8 @@
     }
 
     function init() {
+        var n = document.getElementById('dash-active-project-count');
+        if (n && typeof TABLE_PROJECT_ROWS !== 'undefined') n.textContent = TABLE_PROJECT_ROWS.length;
         var mount = document.getElementById('site-insights-mount');
         if (!mount) return;
         renderInsights(mount);
