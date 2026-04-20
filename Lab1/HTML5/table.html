@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabel - HTML5</title>
     <link id="theme-style" rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="table-sort.css">
+    <link rel="stylesheet" href="table-vertical.css">
 </head>
 <body>
     <div class="layout-container">
@@ -27,49 +29,40 @@
         </aside>
 
         <main class="main-content-wrapper animated-element">
-            <h1>Tabel Responsive</h1>
-            <p>Schimb pe <b>Stil 3</b></p>
+            <h1>Tabel responsive si sortare</h1>
+            <p>Datele provin din <code>table-data.js</code>. Apasati pe antetele coloanelor marcate pentru a sorta; coloana activa si sensul (crescator / descrescator) sunt evidențiate prin CSS.</p>
             <div class="table-responsive">
-                <table class="data-table">
+                <table class="data-table" id="projects-table">
                     <thead>
                         <tr>
-                            <th>Nume Proiect</th>
-                            <th>Manager</th>
-                            <th>Status</th>
-                            <th>Buget</th>
-                            <th>Termen Limita</th>
-                            <th>Actiuni</th>
+                            <th class="sortable" data-sort="project" scope="col" title="Sortati dupa nume proiect">Nume Proiect</th>
+                            <th class="sortable" data-sort="manager" scope="col" title="Sortati dupa manager">Manager</th>
+                            <th class="sortable" data-sort="status" scope="col" title="Sortati dupa status">Status</th>
+                            <th class="sortable" data-sort="budget" scope="col" title="Sortati dupa buget">Buget</th>
+                            <th class="sortable" data-sort="deadline" scope="col" title="Sortati dupa termen">Termen Limita</th>
+                            <th scope="col">Actiuni</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td data-label="Nume Proiect">Constructie Hala</td>
-                            <td data-label="Manager">Popescu Ion</td>
-                            <td data-label="Status">In progres</td>
-                            <td data-label="Buget">50,000 EUR</td>
-                            <td data-label="Termen Limita">2024-12-01</td>
-                            <td data-label="Actiuni">Editeaza</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Nume Proiect">Modernizare Sediu</td>
-                            <td data-label="Manager">Ionescu Maria</td>
-                            <td data-label="Status">Finalizat</td>
-                            <td data-label="Buget">15,000 EUR</td>
-                            <td data-label="Termen Limita">2024-05-15</td>
-                            <td data-label="Actiuni">Vezi</td>
-                        </tr>
-                        <tr>
-                            <td data-label="Nume Proiect">Parcare Auto</td>
-                            <td data-label="Manager">Radu Mihai</td>
-                            <td data-label="Status">In asteptare</td>
-                            <td data-label="Buget">10,000 EUR</td>
-                            <td data-label="Termen Limita">2025-01-20</td>
-                            <td data-label="Actiuni">Editeaza</td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <h2>Tabel vertical (antet in prima coloana)</h2>
+            <p>
+                Fiecare <strong>coloana</strong> este un proiect din acelasi <code>TABLE_PROJECT_ROWS</code>.
+                Prima coloana contine etichetele de rand; <strong>click pe o eticheta</strong> reordoneaza
+                <strong>coloanele</strong> dupa valorile din acel rand (acelasi tip de sortare ca la tabelul clasic).
+            </p>
+            <div class="table-responsive">
+                <table class="data-table vertical-table" id="projects-table-vertical">
+                    <thead></thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </main>
     </div>
+    <script src="table-data.js"></script>
+    <script src="table-sort.js"></script>
+    <script src="table-vertical.js"></script>
 </body>
 </html>

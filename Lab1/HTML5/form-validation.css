@@ -1,0 +1,32 @@
+input.field-error,
+select.field-error:disabled,
+select.field-error,
+textarea.field-error {
+    outline: none;
+    border: 2px solid #c0392b !important;
+    border-radius: 4px;
+    box-shadow: 0 0 0 1px rgba(192, 57, 43, 0.35);
+}
+
+.styled-form input.field-error,
+.styled-form textarea.field-error {
+    border-bottom: 2px solid #c0392b !important;
+}
+
+.radio-group.field-error,
+.checkbox-group.field-error {
+    padding: 8px;
+    border-radius: 4px;
+    border: 2px solid #c0392b;
+    box-shadow: 0 0 0 1px rgba(192, 57, 43, 0.2);
+}
+
+.form-error-summary {
+    color: #c0392b;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    background: #fdecea;
+    border: 1px solid #e74c3c;
+    border-radius: 6px;
+}

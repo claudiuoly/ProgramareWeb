@@ -1,0 +1,86 @@
+.vertical-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.vertical-table th,
+.vertical-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.vertical-table thead th {
+    background-color: #34495e;
+    color: #fff;
+}
+
+.vertical-table tbody th {
+    background-color: #3d566e;
+    color: #fff;
+}
+
+.vertical-table .vertical-corner {
+    background-color: #2c3e50;
+    min-width: 140px;
+}
+
+.vertical-table tbody td {
+    background: #fff;
+}
+
+.vertical-table tbody th.sortable-row-header {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 28px;
+    transition: background-color 0.2s ease;
+}
+
+.vertical-table tbody th.sortable-row-header:hover {
+    background-color: #4a6785;
+}
+
+.vertical-table tbody th.sortable-row-header:focus {
+    outline: 2px solid #aed6f1;
+    outline-offset: -2px;
+}
+
+.vertical-table tbody th.sortable-row-header::after {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    opacity: 0.55;
+    content: '\2195';
+}
+
+.vertical-table tbody th.sortable-row-header:hover::after {
+    opacity: 0.95;
+}
+
+.vertical-table tbody th.sortable-row-header.sorted.asc::after {
+    content: '\25B2';
+    opacity: 1;
+    color: #aed6f1;
+    font-size: 0.7rem;
+}
+
+.vertical-table tbody th.sortable-row-header.sorted.desc::after {
+    content: '\25BC';
+    opacity: 1;
+    color: #aed6f1;
+    font-size: 0.7rem;
+}
+
+.vertical-table tbody th.sortable-row-header.sorted {
+    background-color: #2c3e50;
+    box-shadow: inset 4px 0 0 #aed6f1;
+}
+
+.vertical-table tbody th.row-header-static {
+    cursor: default;
+    padding-right: 15px;
+}

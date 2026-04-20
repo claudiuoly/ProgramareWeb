@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Raport - HTML5</title>
     <link id="theme-style" rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="form-validation.css">
 </head>
 <body>
     <div class="layout-container">
@@ -86,13 +87,13 @@
 
     <br>
 
-    <form action="#" method="get" name="form2">
+    <form id="form-report" action="#" method="get" name="form2" novalidate>
         <fieldset>
             <legend><strong>Formular raport</strong></legend>
             <table>
                 <tr>
                     <td>Santier:</td>
-                    <td><input type="text" name="santier" size="28" maxlength="60" value="Cod" title="Cod"></td>
+                    <td><input type="text" id="report-site" name="santier" size="28" maxlength="60" value="Cod" title="Cod"></td>
                     <td>Luna:</td>
                     <td>
                         <select name="luna" multiple size="3">
@@ -104,7 +105,7 @@
                 </tr>
                 <tr>
                     <td>Ciment (tone):</td>
-                    <td><input type="number" name="ciment" step="0.5" max="5000" value="0"></td>
+                    <td><input type="number" id="report-cement" name="ciment" step="0.5" max="5000" value="0"></td>
                     <td>UM:</td>
                     <td>
                         <input type="radio" name="um" value="t" checked> Tone
@@ -122,25 +123,25 @@
                 </tr>
                 <tr>
                     <td>Responsabil:</td>
-                    <td><input type="text" name="resp" size="22" maxlength="50" value=""></td>
+                    <td><input type="text" id="report-resp" name="resp" size="22" maxlength="50" value=""></td>
                     <td>Parola:</td>
                     <td><input type="password" name="parola" size="18" maxlength="25" value=""></td>
                 </tr>
                 <tr>
                     <td>Email:</td>
-                    <td><input type="email" name="mail" value="r@firma.ro"></td>
+                    <td><input type="email" id="report-email" name="mail" value="r@firma.ro"></td>
                     <td>Fisier:</td>
-                    <td><input type="file" name="fisier"></td>
+                    <td><input type="file" id="report-file" name="fisier"></td>
                 </tr>
                 <tr>
                     <td>Data:</td>
-                    <td><input type="date" name="data_rap"></td>
+                    <td><input type="date" id="report-date" name="data_rap"></td>
                     <td>Obs:</td>
                     <td><input type="text" name="obs" size="32" maxlength="80" value=""></td>
                 </tr>
                 <tr>
                     <td colspan="4">Comentarii:<br>
-                        <textarea name="comentarii" rows="4" cols="70">Text...</textarea>
+                        <textarea id="report-comments" name="comentarii" rows="4" cols="70">Text...</textarea>
                     </td>
                 </tr>
                 <tr>
@@ -162,5 +163,6 @@
 </footer>
         </main>
     </div>
+    <script src="validation.js"></script>
 </body>
 </html>

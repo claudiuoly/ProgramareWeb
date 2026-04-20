@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formular - HTML5</title>
     <link id="theme-style" rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="form-validation.css">
 </head>
 <body>
     <div class="layout-container">
@@ -27,36 +28,89 @@
         </aside>
 
         <main class="main-content-wrapper animated-element">
-            <h1>Formular de Contact</h1>
-            <p>Incercati selectarea casutelor pentru a vedea efectul de <b>:focus</b> si modificarea culorii de bordura si a umbrelor adaugate in CSS.</p>
-            <form class="styled-form" action="#" method="post">
+            <h1>Formular de contact</h1>
+            <p>Validarea se face la trimitere cu JavaScript; campurile invalide sunt marcate cu contur rosu.</p>
+            <p><strong>Dependente intre campuri:</strong> varsta seteaza intervalele acceptate pentru <em>data nasterii</em>; selectia <em>judetului</em> populeaza lista de <em>localitati</em></p>
+            <form id="form-contact" class="styled-form" action="#" method="post" novalidate>
+                <p class="form-error-summary" id="contact-error-summary" hidden></p>
                 <div class="form-group">
-                    <label for="fname">Nume Complet</label>
-                    <input type="text" id="fname" name="fname" placeholder="Ion Popescu" required>
+                    <label for="contact-name">Nume complet</label>
+                    <input type="text" id="contact-name" name="full_name" placeholder="Ion Popescu" autocomplete="name">
                 </div>
                 <div class="form-group">
-                    <label for="email">Adresa de Email</label>
-                    <input type="email" id="email" name="email" placeholder="ion@exemplu.ro" required>
+                    <label for="contact-email">Adresa de e-mail</label>
+                    <input type="email" id="contact-email" name="email" placeholder="ion@exemplu.ro" autocomplete="email">
                 </div>
                 <div class="form-group">
-                    <label for="password">Parola Cont</label>
-                    <input type="password" id="password" name="password" required>
+                    <label for="contact-password">Parola (min. 8 caractere)</label>
+                    <input type="password" id="contact-password" name="password" autocomplete="new-password">
                 </div>
                 <div class="form-group">
-                    <label for="subject">Subiect</label>
-                    <select id="subject" name="subject">
+                    <label for="contact-phone">Telefon</label>
+                    <input type="tel" id="contact-phone" name="phone" placeholder="+40 721 000 000" autocomplete="tel">
+                </div>
+                <div class="form-group">
+                    <label for="contact-website">Site web (optional)</label>
+                    <input type="url" id="contact-website" name="website" placeholder="https://exemplu.ro">
+                </div>
+                <div class="form-group">
+                    <label for="contact-age">Varsta (1–120)</label>
+                    <input type="number" id="contact-age" name="age" min="1" max="120" step="1" placeholder="25">
+                </div>
+                <div class="form-group">
+                    <label for="birth-date">Data nasterii</label>
+                    <input type="date" id="birth-date" name="birth_date">
+                    <small class="field-hint">Intervalele min/max pentru aceasta data depind de varsta introdusa mai sus (si invers: la selectarea datei se poate actualiza varsta).</small>
+                </div>
+                <div class="form-group">
+                    <label for="contact-county">Judet</label>
+                    <select id="contact-county" name="county"></select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-locality">Localitate</label>
+                    <select id="contact-locality" name="locality"></select>
+                </div>
+                <div class="form-group">
+                    <label for="contact-subject">Subiect</label>
+                    <select id="contact-subject" name="subject">
+                        <option value="">— Alegeti —</option>
                         <option value="general">Intrebare generala</option>
-                        <option value="support">Suport Tehnic</option>
+                        <option value="support">Suport tehnic</option>
                         <option value="sales">Vanzari</option>
+                        <option value="feedback">Feedback</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="message">Mesaj</label>
-                    <textarea id="message" name="message" rows="5" placeholder="Scrieti mesajul dvs. aici..." required></textarea>
+                    <span>Tip solicitare</span>
+                    <div class="inline-options">
+                        <label><input type="radio" name="contact_type" value="personal"> Persoana fizica</label>
+                        <label><input type="radio" name="contact_type" value="business"> Firma</label>
+                    </div>
                 </div>
-                <button type="submit">Trimite Mesajul</button>
+                <div class="form-group">
+                    <label for="contact-search">Cautare rapida in FAQ (optional)</label>
+                    <input type="search" id="contact-search" name="faq_search" placeholder="Cuvinte cheie...">
+                </div>
+                <div class="form-group">
+                    <label for="contact-message">Mesaj (min. 10 caractere)</label>
+                    <textarea id="contact-message" name="message" rows="5" placeholder="Scrieti mesajul aici..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="contact-newsletter" name="newsletter" value="yes"> Doresc newsletter</label>
+                </div>
+                <div class="form-group">
+                    <label for="contact-file">Atasament (optional, max. 5 MB)</label>
+                    <input type="file" id="contact-file" name="attachment" accept=".pdf,.png,.jpg,.jpeg,.txt">
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="contact-terms" name="terms" value="accepted"> Sunt de acord cu prelucrarea datelor</label>
+                </div>
+                <button type="submit">Trimite mesajul</button>
             </form>
         </main>
     </div>
+    <script src="field-data.js"></script>
+    <script src="field-dependencies.js"></script>
+    <script src="validation.js"></script>
 </body>
 </html>

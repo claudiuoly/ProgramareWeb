@@ -203,21 +203,70 @@ img {
     margin-bottom: 8px;
     color: #555;
 }
+.styled-form .field-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.85em;
+    color: #666;
+    line-height: 1.35;
+}
+.styled-form select:disabled {
+    opacity: 0.65;
+    cursor: not-allowed;
+    background: #f5f5f5;
+}
 .styled-form input[type="text"],
 .styled-form input[type="email"],
 .styled-form input[type="password"],
+.styled-form input[type="tel"],
+.styled-form input[type="url"],
+.styled-form input[type="number"],
+.styled-form input[type="date"],
+.styled-form input[type="search"],
+.styled-form input[type="file"],
+.styled-form select,
 .styled-form textarea {
     border: none;
     border-bottom: 2px solid #ccc;
     background: transparent;
     padding: 10px 0;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     transition: border-bottom-color 0.3s;
 }
+.styled-form input[type="file"] {
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 10px;
+}
+.styled-form select {
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    background: #fff;
+}
+.styled-form .inline-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    margin-top: 8px;
+}
+.styled-form .inline-options label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+    cursor: pointer;
+}
 .styled-form input:focus,
-.styled-form textarea:focus {
+.styled-form textarea:focus,
+.styled-form select:focus {
     border-bottom-color: #2c3e50;
     outline: none;
+}
+.styled-form select:focus {
+    border-color: #2c3e50;
 }
 .styled-form button {
     background: #2c3e50;

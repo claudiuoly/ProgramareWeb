@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - HTML5</title>
     <link id="theme-style" rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="carousel.css">
+    <link rel="stylesheet" href="site-insights.css">
 </head>
 <body>
     <div class="layout-container">
@@ -28,7 +30,14 @@
 
         <main class="main-content-wrapper animated-element">
             <h1>Dashboard</h1>
-            <p>Folosim CSS Flexbox in Stilul 1 si Stilul 3 pentru afisarea acestor carduri informative. In Stilul 2 folosim CSS Grid.</p>
+
+            <section class="carousel-section" aria-label="Prezentare portal santier">
+                <h2>Evidenta santier si materiale</h2>
+                <div id="carousel-root" class="carousel"></div>
+            </section>
+
+            <section class="site-insights" id="site-insights-mount" aria-live="polite" aria-label="Statistici proiecte"></section>
+
             <div class="dashboard">
                 <div class="widget">
                     <h3>Proiecte Active</h3>
@@ -53,5 +62,9 @@
             </div>
         </main>
     </div>
+    <script src="carousel-data.js"></script>
+    <script src="carousel.js"></script>
+    <script src="table-data.js"></script>
+    <script src="site-insights.js"></script>
 </body>
 </html>

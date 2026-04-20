@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proiecte - HTML5</title>
     <link id="theme-style" rel="stylesheet" href="style2.css">
+    <link rel="stylesheet" href="form-validation.css">
 </head>
 <body>
     <div class="layout-container">
@@ -91,13 +92,13 @@
 
     <br>
 
-    <form action="#" method="get" name="form1">
+    <form id="form-contract" action="#" method="get" name="form1" novalidate>
         <fieldset>
             <legend><strong>Formular</strong></legend>
             <table>
                 <tr>
                     <td>Nume:</td>
-                    <td><input type="text" name="nume" size="40" maxlength="100" value="Nume" title="Nume"></td>
+                    <td><input type="text" id="contract-name" name="nume" size="40" maxlength="100" value="Nume" title="Nume"></td>
                     <td>Cod:</td>
                     <td><input type="text" name="cod" value="COD-2024" readonly></td>
                 </tr>
@@ -118,7 +119,7 @@
                 </tr>
                 <tr>
                     <td>Buget:</td>
-                    <td><input type="number" name="suma" step="0.5" max="999999" value="10000"></td>
+                    <td><input type="number" id="contract-budget" name="suma" step="0.5" max="999999" value="10000"></td>
                     <td>Materiale:</td>
                     <td>
                         <input type="checkbox" name="m1" value="c" checked> Ciment
@@ -133,23 +134,23 @@
                 </tr>
                 <tr>
                     <td>Manager:</td>
-                    <td><input type="text" name="manager" maxlength="20" placeholder="Nume"></td>
+                    <td><input type="text" id="contract-manager" name="manager" maxlength="20" placeholder="Nume"></td>
                     <td>Email:</td>
-                    <td><input type="email" name="mail" placeholder="a@b.ro"></td>
+                    <td><input type="email" id="contract-email" name="mail" placeholder="a@b.ro"></td>
                 </tr>
                 <tr>
                     <td>Termen:</td>
-                    <td><input type="date" name="deadline"></td>
+                    <td><input type="date" id="contract-deadline" name="deadline"></td>
                     <td>Culoare:</td>
                     <td><input type="color" name="culoare"></td>
                 </tr>
                 <tr>
                     <td colspan="2">Descriere:<br>
-                        <textarea name="desc" rows="4" cols="50">Text...</textarea>
+                        <textarea id="contract-desc" name="desc" rows="4" cols="50">Text...</textarea>
                     </td>
                     <td colspan="2">
-                        Parola: <input type="password" name="pass"><br><br>
-                        Fisier: <input type="file" name="fisier">
+                        Parola: <input type="password" id="contract-password" name="pass"><br><br>
+                        Fisier: <input type="file" id="contract-file" name="fisier">
                     </td>
                 </tr>
                 <tr>
@@ -168,5 +169,6 @@
 </footer>
         </main>
     </div>
+    <script src="validation.js"></script>
 </body>
 </html>
