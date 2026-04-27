@@ -1,3 +1,22 @@
+.dashboard-title-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px 16px;
+    margin-bottom: 8px;
+}
+.dashboard-title-bar h1 {
+    margin: 0;
+}
+.dashboard-carousel-interval {
+    font-size: 0.95rem;
+    color: #555;
+}
+.dashboard-carousel-interval select {
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
 .carousel-section {
     margin-bottom: 28px;
 }

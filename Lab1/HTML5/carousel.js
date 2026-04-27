@@ -1,9 +1,15 @@
 (function ($) {
     'use strict';
 
-    var INTERVAL_MS = 3000;
     var index = 0;
     var timerId = null;
+
+    function intervalMs() {
+        var $sel = $('#carousel-interval');
+        if (!$sel.length) return 3000;
+        var v = parseInt($sel.val(), 10);
+        return (isFinite(v) && v > 0 ? v : 3) * 1000;
+    }
 
     function showSlide($slide, $caption, i) {
         if (typeof CAROUSEL_SLIDES === 'undefined' || !CAROUSEL_SLIDES.length) return;
@@ -20,7 +26,7 @@
         if (timerId !== null) clearInterval(timerId);
         timerId = window.setInterval(function () {
             showSlide($slide, $caption, index + 1);
-        }, INTERVAL_MS);
+        }, intervalMs());
     }
 
     function init() {
@@ -53,6 +59,9 @@
 
         showSlide($slide, $caption, 0);
         startAuto($slide, $caption);
+        $('#carousel-interval').on('change', function () {
+            startAuto($slide, $caption);
+        });
     }
 
     $(init);
