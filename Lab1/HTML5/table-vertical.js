@@ -51,6 +51,11 @@
     function renderVerticalTable() {
         var $table = $('#projects-table-vertical');
         if (!$table.length || typeof TABLE_PROJECT_ROWS === 'undefined') return;
+        if (!TABLE_PROJECT_ROWS.length) {
+            $table.find('thead').empty();
+            $table.find('tbody').html('<tr><td colspan="2">Nu mai sunt proiecte.</td></tr>');
+            return;
+        }
         var $thead = $table.find('thead').empty();
         var $tbody = $table.find('tbody').empty();
 
@@ -109,6 +114,15 @@
                 sortState.field = field;
                 sortState.dir = 'asc';
             }
+            applyColumnSort();
+            renderVerticalTable();
+        });
+
+        $(document).on('projects-data-changed', function () {
+            if (typeof TABLE_PROJECT_ROWS === 'undefined' || !TABLE_PROJECT_ROWS.length) return;
+            columnOrder = $.map(TABLE_PROJECT_ROWS, function (_, i) {
+                return i;
+            });
             applyColumnSort();
             renderVerticalTable();
         });

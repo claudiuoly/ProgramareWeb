@@ -41,11 +41,18 @@
                             <th class="sortable" data-sort="budget" scope="col" title="Sortati dupa buget">Buget</th>
                             <th class="sortable" data-sort="deadline" scope="col" title="Sortati dupa termen">Termen Limita</th>
                             <th scope="col">Actiuni</th>
+                            <th scope="col">Stergere</th>
                         </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
             </div>
+
+            <dialog id="del-confirm" style="border:1px solid #999;padding:10px">
+                <p style="margin:0 0 8px 0">Stergeti acest proiect?</p>
+                <button type="button" id="del-no">Nu</button>
+                <button type="button" id="del-yes">Da</button>
+            </dialog>
 
             <h2>Tabel vertical (antet in prima coloana)</h2>
             <p>

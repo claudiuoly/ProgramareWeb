@@ -12,7 +12,8 @@
         status: 'Status',
         budget: 'Buget',
         deadline: 'Termen Limita',
-        action: 'Actiuni'
+        action: 'Actiuni',
+        del: 'Stergere'
     };
 
     function compareRows(a, b, key) {
@@ -55,6 +56,13 @@
             cell('budget', formatBudget(row.budgetEur));
             cell('deadline', row.deadline);
             cell('action', row.action);
+            $tr.append(
+                $('<td></td>')
+                    .attr('data-label', LABELS.del)
+                    .append(
+                        $('<button type="button">sterge</button>').addClass('tbl-del').data('project', row.project)
+                    )
+            );
             $tbody.append($tr);
         });
     }
@@ -88,6 +96,9 @@
         var $table = $('#projects-table');
         if (!$table.length) return;
         var $thead = $table.find('thead');
+        var $dlg = $('#del-confirm');
+        var pending = null;
+
         $thead.on('click', 'th.sortable', function () {
             var col = $(this).attr('data-sort');
             if (col == null) return;
@@ -99,6 +110,33 @@
             }
             applySort($table);
         });
+
+        $table.on('click', '.tbl-del', function () {
+            pending = $(this).data('project');
+            if ($dlg.length) $dlg[0].showModal();
+        });
+        $('#del-yes').on('click', function () {
+            if (pending) {
+                var i;
+                for (i = 0; i < TABLE_PROJECT_ROWS.length; i++) {
+                    if (TABLE_PROJECT_ROWS[i].project === pending) {
+                        break;
+                    }
+                }
+                if (i < TABLE_PROJECT_ROWS.length) {
+                    TABLE_PROJECT_ROWS.splice(i, 1);
+                }
+                pending = null;
+                if ($dlg.length) $dlg[0].close();
+                applySort($table);
+                $(document).trigger('projects-data-changed');
+            }
+        });
+        $('#del-no').on('click', function () {
+            pending = null;
+            if ($dlg.length) $dlg[0].close();
+        });
+
         applySort($table);
     });
 })(jQuery);
