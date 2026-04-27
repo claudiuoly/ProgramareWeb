@@ -1,39 +1,35 @@
-(function () {
+(function ($) {
     'use strict';
 
-    function clearErrors(container) {
-        container.querySelectorAll('.field-error').forEach(function (el) {
-            el.classList.remove('field-error');
-        });
+    function clearErrors($form) {
+        $form.find('.field-error').removeClass('field-error');
     }
 
-    function markInvalid(el) {
-        if (!el) return;
-        var form = el.form;
+    function markInvalid($form, $el) {
+        if (!$el || !$el.length) return;
+        var el = $el[0];
         if (el.type === 'radio' || el.type === 'checkbox') {
             var name = el.name;
-            if (name && form) {
-                var group = form.elements[name];
-                if (group) {
-                    if (typeof group.length === 'number' && group.length > 0 && group[0]) {
-                        for (var i = 0; i < group.length; i++) {
-                            group[i].classList.add('field-error');
-                        }
-                    } else if (group.classList) {
-                        group.classList.add('field-error');
-                    }
-                    return;
-                }
+            if (name) {
+                $form
+                    .find('input')
+                    .filter(function () {
+                        return this.name === name;
+                    })
+                    .addClass('field-error');
+            } else {
+                $el.addClass('field-error');
             }
-            el.classList.add('field-error');
             return;
         }
-        el.classList.add('field-error');
+        $el.addClass('field-error');
     }
 
-    function setRadioGroupError(form, name) {
-        var first = form.querySelector('input[name="' + name.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"]');
-        if (first) markInvalid(first);
+    function setRadioGroupError($form, name) {
+        var $g = $form.find('input').filter(function () {
+            return this.name === name;
+        });
+        if ($g.length) markInvalid($form, $g.first());
     }
 
     function isValidEmail(value) {
@@ -55,151 +51,151 @@
     }
 
     function validateContactForm(e) {
-        var form = e.target;
-        clearErrors(form);
-        var summary = form.querySelector('.form-error-summary');
-        if (summary) summary.hidden = true;
+        var $form = $(this);
+        clearErrors($form);
+        var $summary = $form.find('.form-error-summary');
+        $summary.prop('hidden', true);
 
         var ok = true;
-        var name = form.querySelector('#contact-name');
-        var email = form.querySelector('#contact-email');
-        var password = form.querySelector('#contact-password');
-        var phone = form.querySelector('#contact-phone');
-        var website = form.querySelector('#contact-website');
-        var age = form.querySelector('#contact-age');
-        var birthDate = form.querySelector('#birth-date');
-        var county = form.querySelector('#contact-county');
-        var locality = form.querySelector('#contact-locality');
-        var subject = form.querySelector('#contact-subject');
-        var message = form.querySelector('#contact-message');
-        var terms = form.querySelector('#contact-terms');
-        var file = form.querySelector('#contact-file');
-
-        if (!name || !isNonEmpty(name.value) || name.value.trim().length < 2) {
-            markInvalid(name);
+        var $name = $form.find('#contact-name');
+        if (!$name.val() || $name.val().trim().length < 2) {
+            markInvalid($form, $name);
             ok = false;
         }
-        if (!email || !isValidEmail(email.value)) {
-            markInvalid(email);
+        var $email = $form.find('#contact-email');
+        if (!isValidEmail($email.val() || '')) {
+            markInvalid($form, $email);
             ok = false;
         }
-        if (!password || password.value.length < 8) {
-            markInvalid(password);
+        var $pass = $form.find('#contact-password');
+        if (!$pass.val() || $pass.val().length < 8) {
+            markInvalid($form, $pass);
             ok = false;
         }
-        if (!phone || !/^[\d\s+().-]{7,}$/.test(phone.value.trim())) {
-            markInvalid(phone);
+        var $phone = $form.find('#contact-phone');
+        if (!$phone.val() || !/^[\d\s+().-]{7,}$/.test($phone.val().trim())) {
+            markInvalid($form, $phone);
             ok = false;
         }
-        if (website && isNonEmpty(website.value)) {
+        var $website = $form.find('#contact-website');
+        if ($website.val() && isNonEmpty($website.val())) {
             try {
                 // eslint-disable-next-line no-new
-                new URL(website.value.trim());
+                new URL($website.val().trim());
             } catch (err) {
-                markInvalid(website);
+                markInvalid($form, $website);
                 ok = false;
             }
         }
-        var ageNum = age ? parsePositiveInt(age.value) : NaN;
-        if (!age || !Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) {
-            markInvalid(age);
+        var $age = $form.find('#contact-age');
+        var ageNum = parsePositiveInt($age.val() || '');
+        if (!Number.isFinite(ageNum) || ageNum < 1 || ageNum > 120) {
+            markInvalid($form, $age);
             ok = false;
         }
-        if (!birthDate || !isNonEmpty(birthDate.value)) {
-            markInvalid(birthDate);
+        var $birth = $form.find('#birth-date');
+        if (!$birth.val()) {
+            markInvalid($form, $birth);
             ok = false;
-        } else if (birthDate.min && birthDate.max) {
-            if (birthDate.value < birthDate.min || birthDate.value > birthDate.max) {
-                markInvalid(birthDate);
+        } else {
+            var bmin = $birth.attr('min');
+            var bmax = $birth.attr('max');
+            var bv = $birth.val();
+            if (bmin && bmax && (bv < bmin || bv > bmax)) {
+                markInvalid($form, $birth);
                 ok = false;
             }
         }
-        if (!county || !isNonEmpty(county.value)) {
-            markInvalid(county);
+        var $county = $form.find('#contact-county');
+        if (!$county.val()) {
+            markInvalid($form, $county);
             ok = false;
-        } else if (!locality || !isNonEmpty(locality.value)) {
-            markInvalid(locality);
-            ok = false;
-        }
-        if (!subject || !subject.value) {
-            markInvalid(subject);
-            ok = false;
-        }
-        if (!message || message.value.trim().length < 10) {
-            markInvalid(message);
-            ok = false;
-        }
-        var typeChecked = form.querySelector('input[name="contact_type"]:checked');
-        if (!typeChecked) {
-            setRadioGroupError(form, 'contact_type');
-            ok = false;
-        }
-        if (!terms || !terms.checked) {
-            markInvalid(terms);
-            ok = false;
-        }
-        if (file && file.files && file.files.length > 0) {
-            var f = file.files[0];
-            if (f.size > 5 * 1024 * 1024) {
-                markInvalid(file);
+        } else {
+            var $loc = $form.find('#contact-locality');
+            if (!$loc.val()) {
+                markInvalid($form, $loc);
                 ok = false;
             }
+        }
+        var $subject = $form.find('#contact-subject');
+        if (!$subject.val()) {
+            markInvalid($form, $subject);
+            ok = false;
+        }
+        var $message = $form.find('#contact-message');
+        if (!$message.val() || $message.val().trim().length < 10) {
+            markInvalid($form, $message);
+            ok = false;
+        }
+        if (!$form.find('input[name="contact_type"]:checked').length) {
+            setRadioGroupError($form, 'contact_type');
+            ok = false;
+        }
+        var $terms = $form.find('#contact-terms');
+        if (!$terms.prop('checked')) {
+            markInvalid($form, $terms);
+            ok = false;
+        }
+        var $file = $form.find('#contact-file');
+        var f = $file[0] && $file[0].files && $file[0].files[0];
+        if (f && f.size > 5 * 1024 * 1024) {
+            markInvalid($form, $file);
+            ok = false;
         }
 
         if (!ok) {
             e.preventDefault();
-            if (summary) {
-                summary.textContent = 'Corectati campurile marcate cu rosu.';
-                summary.hidden = false;
-            }
+            $summary.text('Corectati campurile marcate cu rosu.').prop('hidden', false);
         }
     }
 
     function validateContractForm(e) {
-        var form = e.target;
-        clearErrors(form);
+        var $form = $(this);
+        clearErrors($form);
         var ok = true;
 
-        var nume = form.querySelector('#contract-name');
-        var suma = form.querySelector('#contract-budget');
-        var manager = form.querySelector('#contract-manager');
-        var mail = form.querySelector('#contract-email');
-        var deadline = form.querySelector('#contract-deadline');
-        var pass = form.querySelector('#contract-password');
-        var desc = form.querySelector('#contract-desc');
-        var file = form.querySelector('#contract-file');
-
-        if (!nume || !isNonEmpty(nume.value) || nume.value.trim().length < 2 || nume.value.trim() === 'Nume') {
-            markInvalid(nume);
+        var $nume = $form.find('#contract-name');
+        var v = $nume.val() && $nume.val().trim();
+        if (!v || v.length < 2 || v === 'Nume') {
+            markInvalid($form, $nume);
             ok = false;
         }
-        var budget = suma ? parseNumber(suma.value) : NaN;
-        if (!suma || !Number.isFinite(budget) || budget <= 0) {
-            markInvalid(suma);
+        var $suma = $form.find('#contract-budget');
+        var budget = parseNumber($suma.val() || '');
+        if (!Number.isFinite(budget) || budget <= 0) {
+            markInvalid($form, $suma);
             ok = false;
         }
-        if (!manager || manager.value.trim().length < 2) {
-            markInvalid(manager);
+        var $man = $form.find('#contract-manager');
+        if (!$man.val() || $man.val().trim().length < 2) {
+            markInvalid($form, $man);
             ok = false;
         }
-        if (!mail || !isValidEmail(mail.value)) {
-            markInvalid(mail);
+        var $mail = $form.find('#contract-email');
+        if (!isValidEmail($mail.val() || '')) {
+            markInvalid($form, $mail);
             ok = false;
         }
-        if (!deadline || !isNonEmpty(deadline.value)) {
-            markInvalid(deadline);
+        var $dead = $form.find('#contract-deadline');
+        if (!$dead.val()) {
+            markInvalid($form, $dead);
             ok = false;
         }
-        if (!pass || pass.value.length < 6) {
-            markInvalid(pass);
+        var $pw = $form.find('#contract-password');
+        if (!$pw.val() || $pw.val().length < 6) {
+            markInvalid($form, $pw);
             ok = false;
         }
-        if (!desc || desc.value.trim().length < 5 || desc.value.trim() === 'Text...') {
-            markInvalid(desc);
+        var $desc = $form.find('#contract-desc');
+        var d = $desc.val() && $desc.val().trim();
+        if (!d || d.length < 5 || d === 'Text...') {
+            markInvalid($form, $desc);
             ok = false;
         }
-        if (file && file.files && file.files.length > 0 && file.files[0].size > 5 * 1024 * 1024) {
-            markInvalid(file);
+        var $f = $form.find('#contract-file');
+        var file = $f[0] && $f[0].files && $f[0].files[0];
+        if (file && file.size > 5 * 1024 * 1024) {
+            markInvalid($form, $f);
             ok = false;
         }
 
@@ -207,59 +203,56 @@
     }
 
     function validateReportForm(e) {
-        var form = e.target;
-        clearErrors(form);
+        var $form = $(this);
+        clearErrors($form);
         var ok = true;
 
-        var santier = form.querySelector('#report-site');
-        var ciment = form.querySelector('#report-cement');
-        var resp = form.querySelector('#report-resp');
-        var mail = form.querySelector('#report-email');
-        var dataRap = form.querySelector('#report-date');
-        var comentarii = form.querySelector('#report-comments');
-        var file = form.querySelector('#report-file');
-
-        if (!santier || !isNonEmpty(santier.value) || santier.value.trim().length < 2 || santier.value.trim() === 'Cod') {
-            markInvalid(santier);
+        var $s = $form.find('#report-site');
+        var sv = $s.val() && $s.val().trim();
+        if (!sv || sv.length < 2 || sv === 'Cod') {
+            markInvalid($form, $s);
             ok = false;
         }
-        var cementVal = ciment ? parseNumber(ciment.value) : NaN;
-        if (!ciment || !Number.isFinite(cementVal) || cementVal < 0 || cementVal > 5000) {
-            markInvalid(ciment);
+        var $c = $form.find('#report-cement');
+        var ce = parseNumber($c.val() || '');
+        if (!Number.isFinite(ce) || ce < 0 || ce > 5000) {
+            markInvalid($form, $c);
             ok = false;
         }
-        if (!resp || resp.value.trim().length < 2) {
-            markInvalid(resp);
+        var $r = $form.find('#report-resp');
+        if (!$r.val() || $r.val().trim().length < 2) {
+            markInvalid($form, $r);
             ok = false;
         }
-        if (!mail || !isValidEmail(mail.value)) {
-            markInvalid(mail);
+        var $m = $form.find('#report-email');
+        if (!isValidEmail($m.val() || '')) {
+            markInvalid($form, $m);
             ok = false;
         }
-        if (!dataRap || !isNonEmpty(dataRap.value)) {
-            markInvalid(dataRap);
+        var $d = $form.find('#report-date');
+        if (!$d.val()) {
+            markInvalid($form, $d);
             ok = false;
         }
-        if (!comentarii || comentarii.value.trim().length < 4 || comentarii.value.trim() === 'Text...') {
-            markInvalid(comentarii);
+        var $com = $form.find('#report-comments');
+        var cv = $com.val() && $com.val().trim();
+        if (!cv || cv.length < 4 || cv === 'Text...') {
+            markInvalid($form, $com);
             ok = false;
         }
-        if (file && file.files && file.files.length > 0 && file.files[0].size > 5 * 1024 * 1024) {
-            markInvalid(file);
+        var $fl = $form.find('#report-file');
+        var fe = $fl[0] && $fl[0].files && $fl[0].files[0];
+        if (fe && fe.size > 5 * 1024 * 1024) {
+            markInvalid($form, $fl);
             ok = false;
         }
 
         if (!ok) e.preventDefault();
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        var contact = document.getElementById('form-contact');
-        if (contact) contact.addEventListener('submit', validateContactForm);
-
-        var contract = document.getElementById('form-contract');
-        if (contract) contract.addEventListener('submit', validateContractForm);
-
-        var report = document.getElementById('form-report');
-        if (report) report.addEventListener('submit', validateReportForm);
+    $(function () {
+        $('#form-contact').on('submit', validateContactForm);
+        $('#form-contract').on('submit', validateContractForm);
+        $('#form-report').on('submit', validateReportForm);
     });
-})();
+})(jQuery);

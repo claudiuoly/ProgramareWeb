@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     'use strict';
 
     function pad2(n) {
@@ -9,11 +9,10 @@
         return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
     }
 
-    function applyBirthDateBoundsFromAge(ageInput, birthInput) {
-        var age = parseInt(ageInput.value, 10);
+    function applyBirthDateBoundsFromAge($age, $birth) {
+        var age = parseInt($age.val(), 10);
         if (!Number.isFinite(age) || age < 1 || age > 120) {
-            birthInput.removeAttribute('min');
-            birthInput.removeAttribute('max');
+            $birth.removeAttr('min').removeAttr('max');
             return;
         }
         var today = new Date();
@@ -23,17 +22,16 @@
         var minD = new Date(today);
         minD.setFullYear(minD.getFullYear() - age - 1);
         minD.setDate(minD.getDate() + 1);
-        birthInput.min = toISODateLocal(minD);
-        birthInput.max = toISODateLocal(maxD);
+        $birth.attr('min', toISODateLocal(minD)).attr('max', toISODateLocal(maxD));
     }
 
     function computeAgeFromBirthISODate(isoStr) {
         if (!isoStr || typeof isoStr !== 'string') return null;
-        var parts = isoStr.split('-');
-        if (parts.length !== 3) return null;
-        var y = parseInt(parts[0], 10);
-        var m = parseInt(parts[1], 10) - 1;
-        var day = parseInt(parts[2], 10);
+        var p = isoStr.split('-');
+        if (p.length !== 3) return null;
+        var y = parseInt(p[0], 10);
+        var m = parseInt(p[1], 10) - 1;
+        var day = parseInt(p[2], 10);
         if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(day)) return null;
         var birth = new Date(y, m, day);
         if (birth.getFullYear() !== y || birth.getMonth() !== m || birth.getDate() !== day) return null;
@@ -48,93 +46,76 @@
         return age;
     }
 
-    function initAgeBirthDateDependency() {
-        var ageInput = document.getElementById('contact-age');
-        var birthInput = document.getElementById('birth-date');
-        if (!ageInput || !birthInput) return;
-
-        function syncBoundsAndMaybeClearBirth() {
-            applyBirthDateBoundsFromAge(ageInput, birthInput);
-            if (birthInput.min && birthInput.max && birthInput.value) {
-                if (birthInput.value < birthInput.min || birthInput.value > birthInput.max) {
-                    birthInput.value = '';
-                }
+    function initAgeBirth($age, $birth) {
+        function sync() {
+            applyBirthDateBoundsFromAge($age, $birth);
+            var bmin = $birth.attr('min');
+            var bmax = $birth.attr('max');
+            var v = $birth.val();
+            if (bmin && bmax && v && (v < bmin || v > bmax)) {
+                $birth.val('');
             }
         }
 
-        ageInput.addEventListener('input', syncBoundsAndMaybeClearBirth);
-        ageInput.addEventListener('change', syncBoundsAndMaybeClearBirth);
-
-        birthInput.addEventListener('change', function () {
-            var iso = birthInput.value;
+        $age.on('input change', sync);
+        $birth.on('change', function () {
+            var iso = $birth.val();
             if (!iso) return;
-            var computedAge = computeAgeFromBirthISODate(iso);
-            if (computedAge !== null && computedAge >= 1 && computedAge <= 120) {
-                ageInput.value = String(computedAge);
-                applyBirthDateBoundsFromAge(ageInput, birthInput);
+            var a = computeAgeFromBirthISODate(iso);
+            if (a !== null && a >= 1 && a <= 120) {
+                $age.val(String(a));
+                applyBirthDateBoundsFromAge($age, $birth);
             }
         });
-
-        syncBoundsAndMaybeClearBirth();
+        sync();
     }
 
-    function initCountyLocalityDependency() {
-        var countySelect = document.getElementById('contact-county');
-        var localitySelect = document.getElementById('contact-locality');
-        if (!countySelect || !localitySelect) return;
+    function initCountyLocality($county, $locality) {
         if (typeof RO_COUNTIES_LOCALITIES === 'undefined') return;
-
         var counties = Object.keys(RO_COUNTIES_LOCALITIES).sort(function (a, b) {
             return a.localeCompare(b, 'ro');
         });
-
-        countySelect.innerHTML = '';
-        var opt0 = document.createElement('option');
-        opt0.value = '';
-        opt0.textContent = '\u2014 Alegeti judetul \u2014';
-        countySelect.appendChild(opt0);
-        counties.forEach(function (name) {
-            var opt = document.createElement('option');
-            opt.value = name;
-            opt.textContent = name;
-            countySelect.appendChild(opt);
+        $county
+            .empty()
+            .append(
+                $('<option></option>').val('').text('\u2014 Alegeti judetul \u2014')
+            );
+        $.each(counties, function (_, name) {
+            $county.append($('<option></option>').val(name).text(name));
         });
+        $locality
+            .empty()
+            .append($('<option></option>').val('').text('\u2014 Alegeti localitatea \u2014'))
+            .prop('disabled', true);
 
-        localitySelect.innerHTML = '';
-        var loc0 = document.createElement('option');
-        loc0.value = '';
-        loc0.textContent = '\u2014 Alegeti localitatea \u2014';
-        localitySelect.appendChild(loc0);
-        localitySelect.disabled = true;
-
-        countySelect.addEventListener('change', function () {
-            var county = countySelect.value;
-            localitySelect.innerHTML = '';
-            var first = document.createElement('option');
-            first.value = '';
-            first.textContent = '\u2014 Alegeti localitatea \u2014';
-            localitySelect.appendChild(first);
-
+        $county.on('change', function () {
+            var county = $county.val();
+            $locality.empty().append(
+                $('<option></option>').val('').text('\u2014 Alegeti localitatea \u2014')
+            );
             if (!county || !RO_COUNTIES_LOCALITIES[county]) {
-                localitySelect.disabled = true;
+                $locality.prop('disabled', true);
                 return;
             }
-
-            localitySelect.disabled = false;
-            var list = RO_COUNTIES_LOCALITIES[county].slice().sort(function (a, b) {
-                return a.localeCompare(b, 'ro');
-            });
-            list.forEach(function (locName) {
-                var o = document.createElement('option');
-                o.value = locName;
-                o.textContent = locName;
-                localitySelect.appendChild(o);
+            $locality.prop('disabled', false);
+            var list = RO_COUNTIES_LOCALITIES[county]
+                .slice()
+                .sort(function (a, b) {
+                    return a.localeCompare(b, 'ro');
+                });
+            $.each(list, function (_, locName) {
+                $locality.append($('<option></option>').val(locName).text(locName));
             });
         });
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        initAgeBirthDateDependency();
-        initCountyLocalityDependency();
+    $(function () {
+        var $age = $('#contact-age');
+        var $birth = $('#birth-date');
+        if ($age.length && $birth.length) initAgeBirth($age, $birth);
+
+        var $c = $('#contact-county');
+        var $l = $('#contact-locality');
+        if ($c.length && $l.length) initCountyLocality($c, $l);
     });
-})();
+})(jQuery);

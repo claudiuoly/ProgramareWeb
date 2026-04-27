@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     'use strict';
 
     var columnOrder = [];
@@ -27,102 +27,82 @@
             if (a.deadline === b.deadline) return 0;
             return a.deadline < b.deadline ? -1 : 1;
         }
-        var va = String(a[field]).toLocaleLowerCase('ro');
-        var vb = String(b[field]).toLocaleLowerCase('ro');
-        return va.localeCompare(vb, 'ro');
+        return String(a[field])
+            .toLocaleLowerCase('ro')
+            .localeCompare(String(b[field]).toLocaleLowerCase('ro'), 'ro');
     }
 
     function applyColumnSort() {
-        var field = sortState.field;
+        var f = sortState.field;
         var dir = sortState.dir;
         columnOrder.sort(function (a, b) {
-            var c = compareProjectsByField(a, b, field);
+            var c = compareProjectsByField(a, b, f);
             return dir === 'asc' ? c : -c;
         });
     }
 
     function formatCell(row, field) {
         if (field === 'budget') {
-            return (
-                row.budgetEur.toLocaleString('ro-RO', { maximumFractionDigits: 0 }) +
-                ' EUR'
-            );
+            return row.budgetEur.toLocaleString('ro-RO', { maximumFractionDigits: 0 }) + ' EUR';
         }
         return row[field];
     }
 
     function renderVerticalTable() {
-        var table = document.getElementById('projects-table-vertical');
-        if (!table || typeof TABLE_PROJECT_ROWS === 'undefined') return;
+        var $table = $('#projects-table-vertical');
+        if (!$table.length || typeof TABLE_PROJECT_ROWS === 'undefined') return;
+        var $thead = $table.find('thead').empty();
+        var $tbody = $table.find('tbody').empty();
 
-        var thead = table.querySelector('thead');
-        var tbody = table.querySelector('tbody');
-        if (!thead || !tbody) return;
-
-        thead.textContent = '';
-        tbody.textContent = '';
-
-        var headRow = document.createElement('tr');
-        var corner = document.createElement('th');
-        corner.className = 'vertical-corner';
-        corner.scope = 'col';
-        corner.textContent = 'Proiect';
-        headRow.appendChild(corner);
-
-        columnOrder.forEach(function (rowIndex) {
-            var th = document.createElement('th');
-            th.scope = 'col';
-            th.textContent = TABLE_PROJECT_ROWS[rowIndex].project;
-            headRow.appendChild(th);
+        var $headRow = $('<tr></tr>').append(
+            $('<th></th>').addClass('vertical-corner').attr('scope', 'col').text('Proiect')
+        );
+        $.each(columnOrder, function (_, rowIndex) {
+            $headRow.append(
+                $('<th></th>').attr('scope', 'col').text(TABLE_PROJECT_ROWS[rowIndex].project)
+            );
         });
-        thead.appendChild(headRow);
+        $thead.append($headRow);
 
-        ROW_FIELDS.forEach(function (rowDef) {
-            var tr = document.createElement('tr');
-            var th = document.createElement('th');
-            th.scope = 'row';
-            th.textContent = rowDef.label;
+        $.each(ROW_FIELDS, function (_, rowDef) {
+            var $tr = $('<tr></tr>');
+            var $th = $('<th></th>').attr('scope', 'row').text(rowDef.label);
             if (rowDef.field === 'action') {
-                th.className = 'row-header-static';
-                th.title = '';
+                $th.addClass('row-header-static');
             } else {
-                th.className = 'sortable-row-header';
-                th.setAttribute('data-sort-field', rowDef.field);
-                th.title = 'Sortati coloanele dupa: ' + rowDef.label;
+                $th.addClass('sortable-row-header')
+                    .attr('data-sort-field', rowDef.field)
+                    .attr('title', 'Sortati coloanele dupa: ' + rowDef.label);
                 if (sortState.field === rowDef.field) {
-                    th.classList.add('sorted', sortState.dir === 'asc' ? 'asc' : 'desc');
+                    $th.addClass('sorted ' + (sortState.dir === 'asc' ? 'asc' : 'desc'));
                 }
             }
-            tr.appendChild(th);
-
-            columnOrder.forEach(function (rowIndex) {
-                var td = document.createElement('td');
-                td.setAttribute('data-label', rowDef.label);
-                td.textContent = formatCell(TABLE_PROJECT_ROWS[rowIndex], rowDef.field);
-                tr.appendChild(td);
+            $tr.append($th);
+            $.each(columnOrder, function (_, rowIndex) {
+                $tr.append(
+                    $('<td></td>')
+                        .attr('data-label', rowDef.label)
+                        .text(formatCell(TABLE_PROJECT_ROWS[rowIndex], rowDef.field))
+                );
             });
-            tbody.appendChild(tr);
+            $tbody.append($tr);
         });
     }
 
-    function init() {
+    $(function () {
         if (typeof TABLE_PROJECT_ROWS === 'undefined' || !TABLE_PROJECT_ROWS.length) return;
+        var $table = $('#projects-table-vertical');
+        if (!$table.length) return;
 
-        var table = document.getElementById('projects-table-vertical');
-        if (!table) return;
-
-        columnOrder = TABLE_PROJECT_ROWS.map(function (_, i) {
+        columnOrder = $.map(TABLE_PROJECT_ROWS, function (_, i) {
             return i;
         });
         applyColumnSort();
         renderVerticalTable();
 
-        table.querySelector('tbody').addEventListener('click', function (e) {
-            var th = e.target.closest('th.sortable-row-header');
-            if (!th) return;
-            var field = th.getAttribute('data-sort-field');
-            if (!field) return;
-
+        $table.on('click', 'th.sortable-row-header', function () {
+            var field = $(this).attr('data-sort-field');
+            if (field == null) return;
             if (sortState.field === field) {
                 sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
             } else {
@@ -132,7 +112,5 @@
             applyColumnSort();
             renderVerticalTable();
         });
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-})();
+    });
+})(jQuery);

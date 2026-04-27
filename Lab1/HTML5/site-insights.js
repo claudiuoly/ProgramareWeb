@@ -1,4 +1,4 @@
-(function () {
+(function ($) {
     'use strict';
 
     var CONSTRUCTION_TIPS = [
@@ -42,15 +42,11 @@
         var now = new Date();
         var start = new Date(now.getFullYear(), 0, 1);
         var dayOfYear = Math.floor((now - start) / 86400000) + 1;
-        var seed = now.getFullYear() * 400 + dayOfYear;
-        return seed % CONSTRUCTION_TIPS.length;
+        return (now.getFullYear() * 400 + dayOfYear) % CONSTRUCTION_TIPS.length;
     }
 
     function formatBudget(n) {
-        return (
-            n.toLocaleString('ro-RO', { maximumFractionDigits: 0 }) +
-            ' EUR'
-        );
+        return n.toLocaleString('ro-RO', { maximumFractionDigits: 0 }) + ' EUR';
     }
 
     function badgeClassForDays(days) {
@@ -69,194 +65,153 @@
         return 'In ' + days + ' zile';
     }
 
-    function renderInsights(root) {
-        root.textContent = '';
+    function renderInsights($root) {
+        $root.empty();
 
         if (typeof TABLE_PROJECT_ROWS === 'undefined' || !TABLE_PROJECT_ROWS.length) {
-            var empty = document.createElement('p');
-            empty.textContent = 'Nu exista date de proiect incarcate.';
-            root.appendChild(empty);
+            $root.append($('<p></p>').text('Nu exista date de proiect incarcate.'));
             return;
         }
 
         var rows = TABLE_PROJECT_ROWS.slice();
-        var maxBudget = rows.reduce(function (acc, r) {
-            return r.budgetEur > acc ? r.budgetEur : acc;
-        }, 0);
-        var totalBudget = rows.reduce(function (sum, r) {
-            return sum + r.budgetEur;
+        var maxBudget = Math.max.apply(
+            null,
+            $.map(rows, function (r) {
+                return r.budgetEur;
+            })
+        );
+        var totalBudget = rows.reduce(function (s, r) {
+            return s + r.budgetEur;
         }, 0);
         var maxProject = rows.reduce(function (best, r) {
             return r.budgetEur > best.budgetEur ? r : best;
         }, rows[0]);
 
-        var h2 = document.createElement('h2');
-        h2.textContent = 'Statistici din proiecte (date reale din tabel)';
-        root.appendChild(h2);
+        $root.append(
+            $('<h2></h2>').text('Statistici din proiecte (date reale din tabel)'),
+            $('<p></p>')
+                .addClass('site-insights-lead')
+                .text(
+                    'Panou generat cu jQuery din datele din tabel: buget, bare, termene, sfat zilnic.'
+                )
+        );
 
-        var lead = document.createElement('p');
-        lead.className = 'site-insights-lead';
-        lead.textContent =
-            'Panou generat dinamic cu JavaScript: sumar buget, grafic de bare proportional cu bugetul maxim, ' +
-            'lista termene cu coduri de urgenta, plus un sfat de siguranta pe zi (selectat determinist dintr-un tablou).';
-        root.appendChild(lead);
+        var $grid = $('<div></div>').addClass('site-insights-grid');
 
-        var grid = document.createElement('div');
-        grid.className = 'site-insights-grid';
+        var $blockBars = $('<div></div>').addClass('site-insights-block');
+        $blockBars.append($('<h3></h3>').text('Distributie buget pe proiect'));
+        var $summary = $('<div></div>').addClass('site-insights-summary');
+        $summary.append(
+            $('<div></div>')
+                .addClass('site-insights-stat')
+                .append(
+                    $('<span></span>').text('Buget total (suma)'),
+                    $('<strong></strong>').text(formatBudget(totalBudget))
+                ),
+            $('<div></div>')
+                .addClass('site-insights-stat')
+                .append(
+                    $('<span></span>').text('Cel mai mare buget'),
+                    $('<strong></strong>').text(formatBudget(maxProject.budgetEur)),
+                    $('<span></span>').addClass('site-insights-stat-sub').text(maxProject.project)
+                )
+        );
+        $blockBars.append($summary);
 
-        var blockBars = document.createElement('div');
-        blockBars.className = 'site-insights-block';
-
-        var h3bars = document.createElement('h3');
-        h3bars.textContent = 'Distributie buget pe proiect';
-        blockBars.appendChild(h3bars);
-
-        var summary = document.createElement('div');
-        summary.className = 'site-insights-summary';
-
-        var st1 = document.createElement('div');
-        st1.className = 'site-insights-stat';
-        var st1label = document.createElement('span');
-        st1label.textContent = 'Buget total (suma)';
-        var st1strong = document.createElement('strong');
-        st1strong.textContent = formatBudget(totalBudget);
-        st1.appendChild(st1label);
-        st1.appendChild(st1strong);
-        summary.appendChild(st1);
-
-        var st2 = document.createElement('div');
-        st2.className = 'site-insights-stat';
-        var st2label = document.createElement('span');
-        st2label.textContent = 'Cel mai mare buget';
-        var st2strong = document.createElement('strong');
-        st2strong.textContent = formatBudget(maxProject.budgetEur);
-        var st2sub = document.createElement('span');
-        st2sub.className = 'site-insights-stat-sub';
-        st2sub.textContent = maxProject.project;
-        st2.appendChild(st2label);
-        st2.appendChild(st2strong);
-        st2.appendChild(st2sub);
-        summary.appendChild(st2);
-
-        blockBars.appendChild(summary);
-
-        var barsWrap = document.createElement('div');
-        barsWrap.className = 'insight-bars';
-
-        rows
-            .slice()
-            .sort(function (a, b) {
+        var $barsWrap = $('<div></div>').addClass('insight-bars');
+        $.each(
+            rows.slice().sort(function (a, b) {
                 return b.budgetEur - a.budgetEur;
-            })
-            .forEach(function (r) {
+            }),
+            function (_, r) {
                 var pct = maxBudget > 0 ? Math.round((r.budgetEur / maxBudget) * 1000) / 10 : 0;
-                var row = document.createElement('div');
-                row.className = 'insight-bar-row';
+                $barsWrap.append(
+                    $('<div></div>')
+                        .addClass('insight-bar-row')
+                        .append(
+                            $('<div></div>').addClass('label').text(r.project),
+                            $('<div></div>').append(
+                                $('<div></div>')
+                                    .addClass('insight-bar-track')
+                                    .append(
+                                        $('<div></div>').addClass('insight-bar-fill').css('width', pct + '%')
+                                    ),
+                                $('<div></div>')
+                                    .addClass('insight-bar-meta')
+                                    .text(formatBudget(r.budgetEur) + ' · ' + pct + '% din max.')
+                            )
+                        )
+                );
+            }
+        );
+        $blockBars.append($barsWrap);
+        $grid.append($blockBars);
 
-                var lab = document.createElement('div');
-                lab.className = 'label';
-                lab.textContent = r.project;
-                row.appendChild(lab);
-
-                var cell = document.createElement('div');
-                var track = document.createElement('div');
-                track.className = 'insight-bar-track';
-                var fill = document.createElement('div');
-                fill.className = 'insight-bar-fill';
-                fill.style.width = pct + '%';
-                track.appendChild(fill);
-                cell.appendChild(track);
-                var meta = document.createElement('div');
-                meta.className = 'insight-bar-meta';
-                meta.textContent = formatBudget(r.budgetEur) + ' · ' + pct + '% din max.';
-                cell.appendChild(meta);
-                row.appendChild(cell);
-                barsWrap.appendChild(row);
-            });
-
-        blockBars.appendChild(barsWrap);
-        grid.appendChild(blockBars);
-
-        var blockDl = document.createElement('div');
-        blockDl.className = 'site-insights-block site-insights-deadlines';
-
-        var h3dl = document.createElement('h3');
-        h3dl.textContent = 'Termene limita (ordonate)';
-        blockDl.appendChild(h3dl);
-
-        var ul = document.createElement('ul');
-        rows
-            .slice()
-            .sort(function (a, b) {
+        var $blockDl = $('<div></div>').addClass('site-insights-block site-insights-deadlines');
+        $blockDl.append($('<h3></h3>').text('Termene limita (ordonate)'));
+        var $ul = $('<ul></ul>');
+        $.each(
+            rows.slice().sort(function (a, b) {
                 return a.deadline < b.deadline ? -1 : a.deadline > b.deadline ? 1 : 0;
-            })
-            .forEach(function (r) {
+            }),
+            function (_, r) {
                 var days = daysFromToday(r.deadline);
-                var li = document.createElement('li');
+                $ul.append(
+                    $('<li></li>').append(
+                        $('<span></span>')
+                            .addClass('deadline-badge ' + badgeClassForDays(days))
+                            .text(badgeLabelForDays(days)),
+                        $('<span></span>').text(r.project),
+                        $('<span></span>').css('color', '#666').text(r.deadline)
+                    )
+                );
+            }
+        );
+        $blockDl.append($ul);
+        $grid.append($blockDl);
 
-                var badge = document.createElement('span');
-                badge.className = 'deadline-badge ' + badgeClassForDays(days);
-                badge.textContent = badgeLabelForDays(days);
-
-                var title = document.createElement('span');
-                title.textContent = r.project;
-
-                var when = document.createElement('span');
-                when.style.color = '#666';
-                when.textContent = r.deadline;
-
-                li.appendChild(badge);
-                li.appendChild(title);
-                li.appendChild(when);
-                ul.appendChild(li);
-            });
-        blockDl.appendChild(ul);
-        grid.appendChild(blockDl);
-
-        var tip = document.createElement('div');
-        tip.className = 'site-insights-tip';
-        var h3t = document.createElement('h3');
-        h3t.textContent = 'Sfat de siguranta (ziua curenta)';
-        tip.appendChild(h3t);
-        var pTip = document.createElement('p');
-        pTip.textContent = CONSTRUCTION_TIPS[dailyTipIndex()];
-        tip.appendChild(pTip);
-        var tipFoot = document.createElement('div');
-        tipFoot.className = 'tip-date';
         var now = new Date();
-        tipFoot.textContent =
-            'Index sfat: ' +
-            dailyTipIndex() +
-            ' / ' +
-            CONSTRUCTION_TIPS.length +
-            ' · Data: ' +
-            pad2(now.getDate()) +
-            '.' +
-            pad2(now.getMonth() + 1) +
-            '.' +
-            now.getFullYear();
-        tip.appendChild(tipFoot);
-        grid.appendChild(tip);
+        $grid.append(
+            $('<div></div>')
+                .addClass('site-insights-tip')
+                .append(
+                    $('<h3></h3>').text('Sfat de siguranta (ziua curenta)'),
+                    $('<p></p>').text(CONSTRUCTION_TIPS[dailyTipIndex()]),
+                    $('<div></div>')
+                        .addClass('tip-date')
+                        .text(
+                            'Index sfat: ' +
+                                dailyTipIndex() +
+                                ' / ' +
+                                CONSTRUCTION_TIPS.length +
+                                ' · Data: ' +
+                                pad2(now.getDate()) +
+                                '.' +
+                                pad2(now.getMonth() + 1) +
+                                '.' +
+                                now.getFullYear()
+                        )
+                )
+        );
 
-        root.appendChild(grid);
+        $root.append($grid);
 
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'site-insights-refresh';
-        btn.textContent = 'Recalculeaza panoul';
-        btn.addEventListener('click', function () {
-            renderInsights(root);
-        });
-        root.appendChild(btn);
+        $root.append(
+            $('<button></button>')
+                .attr('type', 'button')
+                .addClass('site-insights-refresh')
+                .text('Recalculeaza panoul')
+                .on('click', function () {
+                    renderInsights($root);
+                })
+        );
     }
 
-    function init() {
-        var n = document.getElementById('dash-active-project-count');
-        if (n && typeof TABLE_PROJECT_ROWS !== 'undefined') n.textContent = TABLE_PROJECT_ROWS.length;
-        var mount = document.getElementById('site-insights-mount');
-        if (!mount) return;
-        renderInsights(mount);
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-})();
+    $(function () {
+        $('#dash-active-project-count').text(
+            typeof TABLE_PROJECT_ROWS !== 'undefined' ? TABLE_PROJECT_ROWS.length : ''
+        );
+        var $mount = $('#site-insights-mount');
+        if ($mount.length) renderInsights($mount);
+    });
+})(jQuery);

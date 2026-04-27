@@ -1,68 +1,59 @@
-(function () {
+(function ($) {
     'use strict';
 
     var INTERVAL_MS = 3000;
-    var root;
-    var slideEl;
-    var captionEl;
     var index = 0;
     var timerId = null;
 
-    function showSlide(i) {
+    function showSlide($slide, $caption, i) {
         if (typeof CAROUSEL_SLIDES === 'undefined' || !CAROUSEL_SLIDES.length) return;
         var n = CAROUSEL_SLIDES.length;
         index = ((i % n) + n) % n;
         var item = CAROUSEL_SLIDES[index];
-        slideEl.style.backgroundImage = 'url("' + item.image.replace(/"/g, '%22') + '")';
-        captionEl.textContent = item.text;
-        slideEl.setAttribute('aria-label', item.text);
+        $slide
+            .css('backgroundImage', 'url("' + item.image.replace(/"/g, '%22') + '")')
+            .attr('aria-label', item.text);
+        $caption.text(item.text);
     }
 
-    function next() {
-        showSlide(index + 1);
-    }
-
-    function prev() {
-        showSlide(index - 1);
-    }
-
-    function startAuto() {
-        if (timerId !== null) {
-            clearInterval(timerId);
-        }
-        timerId = window.setInterval(next, INTERVAL_MS);
+    function startAuto($slide, $caption) {
+        if (timerId !== null) clearInterval(timerId);
+        timerId = window.setInterval(function () {
+            showSlide($slide, $caption, index + 1);
+        }, INTERVAL_MS);
     }
 
     function init() {
-        root = document.getElementById('carousel-root');
-        if (!root || typeof CAROUSEL_SLIDES === 'undefined' || CAROUSEL_SLIDES.length < 4) {
+        var $root = $('#carousel-root');
+        if (!$root.length || typeof CAROUSEL_SLIDES === 'undefined' || CAROUSEL_SLIDES.length < 4) {
             return;
         }
 
-        root.innerHTML =
+        $root.html(
             '<div class="carousel-viewport">' +
-            '<div class="carousel-slide" id="carousel-slide" role="region" aria-roledescription="slide">' +
-            '<span class="carousel-caption" id="carousel-caption"></span>' +
-            '</div>' +
-            '</div>' +
-            '<button type="button" class="carousel-nav carousel-prev" id="carousel-prev" aria-label="Slide anterior">&lt;</button>' +
-            '<button type="button" class="carousel-nav carousel-next" id="carousel-next" aria-label="Slide urmator">&gt;</button>';
+                '<div class="carousel-slide" id="carousel-slide" role="region" aria-roledescription="slide">' +
+                '<span class="carousel-caption" id="carousel-caption"></span></div></div>' +
+                '<button type="button" class="carousel-nav carousel-prev" data-carousel-dir="prev" aria-label="Slide anterior">&lt;</button>' +
+                '<button type="button" class="carousel-nav carousel-next" data-carousel-dir="next" aria-label="Slide urmator">&gt;</button>'
+        );
 
-        slideEl = document.getElementById('carousel-slide');
-        captionEl = document.getElementById('carousel-caption');
+        var $slide = $root.find('#carousel-slide');
+        var $caption = $root.find('#carousel-caption');
 
-        document.getElementById('carousel-prev').addEventListener('click', function () {
-            prev();
-            startAuto();
-        });
-        document.getElementById('carousel-next').addEventListener('click', function () {
-            next();
-            startAuto();
-        });
+        $root
+            .on('click', '[data-carousel-dir]', function () {
+                var dir = $(this).data('carousel-dir');
+                if (dir === 'prev') {
+                    showSlide($slide, $caption, index - 1);
+                } else {
+                    showSlide($slide, $caption, index + 1);
+                }
+                startAuto($slide, $caption);
+            });
 
-        showSlide(0);
-        startAuto();
+        showSlide($slide, $caption, 0);
+        startAuto($slide, $caption);
     }
 
-    document.addEventListener('DOMContentLoaded', init);
-})();
+    $(init);
+})(jQuery);
