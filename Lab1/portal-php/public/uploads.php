@@ -24,7 +24,10 @@ if ($baseDir === '') {
 }
 
 if (!is_dir($baseDir)) {
-    @mkdir($baseDir, 0700, true);
+    @mkdir($baseDir, 0777, true);
+}
+if (is_dir($baseDir)) {
+    @chmod($baseDir, 0777);
 }
 if (!is_dir($baseDir) || !is_writable($baseDir)) {
     http_response_code(500);
