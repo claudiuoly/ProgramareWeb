@@ -47,6 +47,20 @@ function portal_prepend_pear_to_include_path(): void
     }
 }
 
+function portal_captcha_render_builtin_fallback(): array
+{
+    $a = random_int(1, 19);
+    $b = random_int(1, 19);
+    $sum = $a + $b;
+    $_SESSION['portal_captcha_answer'] = (string) $sum;
+    $q = "{$a} + {$b}";
+    $html = '<p>' . htmlspecialchars($q, ENT_QUOTES, 'UTF-8')
+        . ' = <abbr title="Rezultat">?</abbr></p>'
+        . '<p class="hint">Scrie răspunsul (număr întreg).</p>';
+
+    return ['ok' => true, 'html' => $html, 'error' => null];
+}
+
 function portal_captcha_render(): array
 {
     portal_prepend_pear_to_include_path();
@@ -66,11 +80,7 @@ function portal_captcha_render(): array
     }
 
     if (!class_exists('Text_CAPTCHA', false)) {
-        return [
-            'ok' => false,
-            'html' => '',
-            'error' => 'PEAR Text_CAPTCHA is not available. Run: pear install Text_CAPTCHA. PEAR php_dir should contain Text/CAPTCHA.php (Homebrew often: /opt/homebrew/share/pear). Tip: pear config-get php_dir',
-        ];
+        return portal_captcha_render_builtin_fallback();
     }
 
     try {
