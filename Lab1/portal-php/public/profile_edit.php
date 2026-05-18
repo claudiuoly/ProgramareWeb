@@ -10,6 +10,10 @@ require_once dirname(__DIR__) . '/includes/layout.php';
 
 portal_require_login();
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    portal_csrf_abort_if_invalid();
+}
+
 $u = portal_session_user();
 $departments = [
     'general' => 'General',
@@ -74,9 +78,17 @@ if ($message) {
     echo '<div class="msg ' . $cls . '">' . htmlspecialchars($message, ENT_QUOTES, 'UTF-8') . '</div>';
 }
 ?>
+<?php if (portal_security_lab_vulnerable()): ?>
+<div class="card lab-banner">
+    <h2>Bio preview (stored XSS demo)</h2>
+    <p class="hint">Lab only: rendering fără escape. După prezentare, setează security_lab_vulnerable la false în config.php.</p>
+    <div class="stored-xss-target"><?= (string) ($row['bio'] ?? '') ?></div>
+</div>
+<?php endif; ?>
 <div class="card">
     <h1>Profile</h1>
     <form method="post" action="<?= htmlspecialchars(portal_url('/profile_edit.php'), ENT_QUOTES, 'UTF-8') ?>">
+        <?= portal_csrf_field() ?>
         <div class="form-row">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required maxlength="255"

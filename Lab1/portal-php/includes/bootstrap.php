@@ -27,6 +27,8 @@ if (session_status() !== PHP_SESSION_ACTIVE) {
     session_start();
 }
 
+require_once __DIR__ . '/security_lab.php';
+
 require_once __DIR__ . '/db_pdo_sqlite.php';
 portal_sqlite_bootstrap($config);
 
