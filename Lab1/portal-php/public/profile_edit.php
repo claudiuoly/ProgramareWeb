@@ -76,7 +76,7 @@ if ($message) {
 ?>
 <div class="card">
     <h1>Profile</h1>
-    <form method="post" action="/profile_edit.php">
+    <form method="post" action="<?= htmlspecialchars(portal_url('/profile_edit.php'), ENT_QUOTES, 'UTF-8') ?>">
         <div class="form-row">
             <label for="email">Email</label>
             <input type="email" id="email" name="email" required maxlength="255"

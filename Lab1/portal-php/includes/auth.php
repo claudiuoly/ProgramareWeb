@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/db_mysqli.php';
 require_once __DIR__ . '/db_pdo_mysql.php';
+require_once __DIR__ . '/url.php';
 
 const PORTAL_REMEMBER_COOKIE = 'portal_remember';
 
@@ -19,10 +20,13 @@ function portal_session_user(): ?array
     ];
 }
 
-function portal_require_login(string $redirectTo = '/login.php'): void
+function portal_require_login(?string $redirectTo = null): void
 {
     if (portal_session_user() !== null) {
         return;
+    }
+    if ($redirectTo === null) {
+        $redirectTo = portal_url('/login.php');
     }
     $next = $_SERVER['REQUEST_URI'] ?? '/';
     header('Location: ' . $redirectTo . '?next=' . rawurlencode($next));
@@ -35,7 +39,7 @@ function portal_require_role(string $roleName): void
     $u = portal_session_user();
     if ($u === null || strcasecmp($u['role_name'], $roleName) !== 0) {
         http_response_code(403);
-        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>403</title></head><body><p>Forbidden.</p><p><a href="/profile_edit.php">Profile</a></p></body></html>';
+        echo '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>403</title></head><body><p>Forbidden.</p><p><a href="' . htmlspecialchars(portal_url('/profile_edit.php'), ENT_QUOTES, 'UTF-8') . '">Profile</a></p></body></html>';
         exit;
     }
 }
@@ -101,7 +105,7 @@ function portal_remember_me_create(array $config, int $userId): void
         $payload,
         [
             'expires' => time() + $ttl,
-            'path' => '/',
+            'path' => portal_cookie_path(),
             'secure' => $secure,
             'httponly' => true,
             'samesite' => 'Lax',
@@ -117,7 +121,7 @@ function portal_remember_me_clear_cookie(): void
         '',
         [
             'expires' => time() - 3600,
-            'path' => '/',
+            'path' => portal_cookie_path(),
             'secure' => $secure,
             'httponly' => true,
             'samesite' => 'Lax',

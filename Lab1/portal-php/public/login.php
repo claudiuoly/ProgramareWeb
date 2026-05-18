@@ -11,11 +11,11 @@ require_once dirname(__DIR__) . '/includes/layout.php';
 $config = $GLOBALS['PORTAL_CONFIG'];
 
 if (portal_session_user() !== null) {
-    header('Location: /profile_edit.php');
+    header('Location: ' . portal_url('/profile_edit.php'));
     exit;
 }
 
-$safeNext = '/profile_edit.php';
+$safeNext = portal_url('/profile_edit.php');
 if (isset($_GET['next']) && is_string($_GET['next'])) {
     $n = $_GET['next'];
     if ($n !== '' && $n[0] === '/' && !str_starts_with($n, '//')) {
@@ -72,7 +72,7 @@ if (!empty($captchaBlock['error'])) {
 ?>
 <div class="card">
     <h1>Login</h1>
-    <form method="post" action="/login.php">
+    <form method="post" action="<?= htmlspecialchars(portal_url('/login.php'), ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="next" value="<?= htmlspecialchars($safeNext, ENT_QUOTES, 'UTF-8') ?>">
         <div class="form-row">
             <label for="username">Username</label>

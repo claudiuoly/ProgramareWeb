@@ -123,7 +123,7 @@ if ($message) {
 ?>
 <div class="card">
     <h1>Files</h1>
-    <form method="post" action="/uploads.php" enctype="multipart/form-data">
+    <form method="post" action="<?= htmlspecialchars(portal_url('/uploads.php'), ENT_QUOTES, 'UTF-8') ?>" enctype="multipart/form-data">
         <div class="form-row">
             <label for="file">Upload (PDF, JPG, PNG, TXT, max <?= (int) ($maxBytes / 1024) ?> KB)</label>
             <input type="file" id="file" name="file" required>
@@ -139,7 +139,7 @@ if ($message) {
                     <td><?= htmlspecialchars((string) $f['original_name'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= (int) $f['size'] ?></td>
                     <td>
-                        <form method="post" action="/uploads.php" class="inl">
+                        <form method="post" action="<?= htmlspecialchars(portal_url('/uploads.php'), ENT_QUOTES, 'UTF-8') ?>" class="inl">
                             <input type="hidden" name="delete_upload_id" value="<?= (int) $f['id'] ?>">
                             <button class="btn btn-danger" type="submit">Delete</button>
                         </form>

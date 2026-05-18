@@ -12,12 +12,13 @@ $GLOBALS['PORTAL_CONFIG'] = require $configPath;
 $config = $GLOBALS['PORTAL_CONFIG'];
 
 require_once __DIR__ . '/php_legacy_compat.php';
+require_once __DIR__ . '/url.php';
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
     $secure = !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
     session_set_cookie_params([
         'lifetime' => 0,
-        'path' => '/',
+        'path' => portal_cookie_path(),
         'secure' => $secure,
         'httponly' => true,
         'samesite' => 'Lax',
