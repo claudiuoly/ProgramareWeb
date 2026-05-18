@@ -3,3 +3,5 @@
 /data/*.sqlite-journal
 /storage/uploads/*
 !/storage/uploads/.gitkeep
+/public/uploads/*
+!/public/uploads/.gitkeep
